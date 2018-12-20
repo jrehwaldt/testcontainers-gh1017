@@ -1,0 +1,17 @@
+dependencies {
+    testCompile "org.junit.jupiter:junit-jupiter-api"
+    testCompile "org.junit.jupiter:junit-jupiter-params"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    reports {
+        html.enabled = true
+    }
+}

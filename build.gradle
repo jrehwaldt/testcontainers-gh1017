@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        versions = [
+            kotlin          : '1.3.11',
+            springBoot      : '2.1.1.RELEASE',
+            testcontainer   : '1.10.3'
+        ]
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${versions.kotlin}")
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+apply from: "build-scripts/junit5.gradle"
+
+group = 'de.nixis'
+
+sourceCompatibility = 1.8
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+configurations {
+    all*.exclude module: 'commons-logging'
+    all*.exclude module: 'junit'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.testcontainers:testcontainers:${versions.testcontainer}"
+    testImplementation "org.testcontainers:junit-jupiter:${versions.testcontainer}"
+}
